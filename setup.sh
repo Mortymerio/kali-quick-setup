@@ -1,9 +1,5 @@
 
----
-
 ## 2. `setup.sh` (Script de instalación inteligente)
-
-```bash
 #!/bin/bash
 
 # Kali Quick Setup - Instalador seguro
