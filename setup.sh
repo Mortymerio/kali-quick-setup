@@ -51,8 +51,28 @@ if ! grep -q "$LOAD_LINE" "$RC_FILE" 2>/dev/null; then
     echo "======================================" >> "$RC_FILE"
 fi
 
+# === CARGAR FUNCIONES CON SEGURIDAD ===
+LOAD_LINE="[ -f $FUNCS_FILE ] && . $FUNCS_FILE"
+
+# Eliminar líneas anteriores de Kali Quick Setup (evita duplicados)
+sed -i '/Kali Quick Setup (Mortymerio)/,/======================================"$/d' "$RC_FILE" 2>/dev/null || true
+
+# Agregar solo una vez
+echo "" >> "$RC_FILE"
+echo "# === Kali Quick Setup (Mortymerio) ===" >> "$RC_FILE"
+echo "$LOAD_LINE" >> "$RC_FILE"
+echo "======================================" >> "$RC_FILE"
+
+# Asegurar bash-completion
+if ! dpkg -l | grep -q bash-completion; then
+    echo "Instalando bash-completion..."
+    sudo apt install -y bash-completion
+fi
+
 # Cargar ahora
-source "$FUNCS_FILE"
+[ -f "$FUNCS_FILE" ] && source "$FUNCS_FILE"
+
+echo "¡Listo! Usa: ctfmode"
 
 echo ""
 echo "¡Listo! Prueba:"
